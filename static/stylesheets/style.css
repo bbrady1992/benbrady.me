@@ -1,0 +1,14 @@
+body {
+  background-color: #222222;
+  color: white;
+  font-family: "Lucida Console", "Courier New", monospace;
+}
+
+.centerbanner {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	text-align: center;
+}
