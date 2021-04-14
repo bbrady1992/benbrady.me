@@ -1,4 +1,3 @@
 #!/bin/bash
 
-export FLASK_APP=app.py 
-python3 -m flask run --host=0.0.0.0
+gunicorn --certfile=/etc/letsencrypt/live/benbrady.me/cert.pem --keyfile=/etc/letsencrypt/live/benbrady.me/privkey.pem --bind 0.0.0.0:443 wsgi:app
