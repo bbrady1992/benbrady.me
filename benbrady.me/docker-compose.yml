@@ -1,0 +1,10 @@
+version: "3.0"
+services:
+  site:
+    container_name: site
+    build: .
+    image: bbrady1992/personal-site:latest
+    ports:
+            - "0.0.0.0:3000:443"
+    volumes:
+            - "/etc/letsencrypt:/etc/letsencrypt"
