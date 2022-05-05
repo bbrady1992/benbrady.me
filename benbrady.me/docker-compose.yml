@@ -1,10 +1,19 @@
 version: "3.0"
 services:
+  reverse:
+    container_name: reverse
+    hostname: reverse
+    image: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+            - "/etc/letsencrypt:/etc/letsencrypt"
+            - "./nginx:/etc/nginx"
   site:
     container_name: site
+    hostname: site
     build: .
     image: bbrady1992/personal-site:latest
     ports:
-            - "0.0.0.0:3000:443"
-    volumes:
-            - "/etc/letsencrypt:/etc/letsencrypt"
+      - 3000:3000
