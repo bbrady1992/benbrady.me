@@ -11,6 +11,7 @@ import {
   Heading,
   HStack,
   Image,
+  Img,
   Input,
   Select,
   SimpleGrid,
@@ -26,11 +27,11 @@ export default function Homepage(): JSX.Element {
   return (
     <Container maxWidth="full" padding={0} bg="brand.background">
       <Flex height="100vh" justifyContent="center" alignItems="center">
-        <VStack spacing={4} textAlign="center">
+        <VStack padding={4} spacing={4} textAlign="center">
           <Heading size="2xl" color="brand.text">
             Well, well, well...back again, DAN??
           </Heading>
-          <Image src="/images/random-itysl.gif" alt="RANDOM" />
+          <Img src="/images/random-itysl.gif" alt="RANDOM" />
           <Text color="brand.text">
             <Link href="/Jokes">
               <a>Jokes</a>
