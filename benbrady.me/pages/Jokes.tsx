@@ -62,6 +62,11 @@ export default function Jokes(): JSX.Element {
                 />
 
                 <Joke setup="Who destroy the city" punchline="buttzilla" />
+
+                <Joke
+                  setup="Where does Hitler keep his armies?"
+                  punchline="In his sleevies"
+                />
               </Accordion>
               <Img
                 src="/images/stuart-little.jpg"
