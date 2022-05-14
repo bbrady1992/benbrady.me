@@ -13,7 +13,14 @@ services:
   site:
     container_name: site
     hostname: site
-    build: .
+    #build: .
     image: bbrady1992/personal-site:latest
     ports:
+      - 3000:3000
+  subdomain:
+    container_name: subdomain
+    hostname: subdomain
+    build: ../subdomain-example
+    image: subdomain:latest
+    ports: 
       - 3000:3000
