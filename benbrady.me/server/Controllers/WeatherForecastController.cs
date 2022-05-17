@@ -14,7 +14,7 @@ namespace server.Controllers
   }
 
   [ApiController]
-  [Route("[controller]")]
+  [Route("/api/[controller]")]
   public class WeatherForecastController : ControllerBase
   {
     private readonly ILogger<WeatherForecastController> _logger;
