@@ -36,6 +36,7 @@ export default function Homepage(): JSX.Element {
     forecasts: forecastData.forecasts,
     forecastDataLoaded,
   });
+  console.log({ env: process.env.NODE_ENV });
   return (
     <Container maxWidth="full" padding={0} bg="brand.background">
       <Flex height="100vh" justifyContent="center" alignItems="center">
