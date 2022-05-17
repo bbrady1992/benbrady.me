@@ -1,18 +1,18 @@
 version: "3.0"
 services:
-  #reverse:
-  #  container_name: reverse
-  #  hostname: reverse
-  #  image: nginx
-  #  ports:
-  #    - 80:80
-  #    - 443:443
-  #  volumes:
-  #          - "/etc/letsencrypt:/etc/letsencrypt"
-  #          - "./client/nginx:/etc/nginx"
-  site:
-    container_name: site
-    hostname: site
+  reverse:
+    container_name: reverse
+    hostname: reverse
+    image: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+            - "/etc/letsencrypt:/etc/letsencrypt"
+            - "./nginx:/etc/nginx"
+  client:
+    container_name: client
+    hostname: client
     build: client
     image: bbrady1992/personal-site:latest
     ports:
@@ -24,7 +24,6 @@ services:
     image: bbrady1992/server:latest
     ports:
       - 5000:80
-      - 5001:443
   #subdomain:
   #  container_name: subdomain
   #  hostname: subdomain
