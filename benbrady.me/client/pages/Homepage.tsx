@@ -1,29 +1,41 @@
 import {
-  AspectRatio,
-  Button,
-  Checkbox,
   Container,
   Flex,
-  FormControl,
-  FormLabel,
-  Grid,
-  GridItem,
   Heading,
-  HStack,
-  Image,
   Img,
-  Input,
-  Select,
-  SimpleGrid,
+  ListItem,
+  Spinner,
   Text,
-  useColorMode,
-  useColorModeValue,
+  UnorderedList,
   VStack,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  BLANK_WEATHER_FORECAST_DATA,
+  WeatherForecast,
+  WeatherForecastData,
+} from "../api/WeatherForecast";
 
 export default function Homepage(): JSX.Element {
+  useEffect(() => {
+    WeatherForecast().then((data) => {
+      setForecastData(data);
+    });
+  }, []);
+
+  const [forecastData, setForecastData] = useState<WeatherForecastData>(
+    BLANK_WEATHER_FORECAST_DATA
+  );
+  const forecastDataLoaded = useMemo(() => {
+    return forecastData != BLANK_WEATHER_FORECAST_DATA;
+  }, [forecastData]);
+
+  console.log({
+    forecastData,
+    forecasts: forecastData.forecasts,
+    forecastDataLoaded,
+  });
   return (
     <Container maxWidth="full" padding={0} bg="brand.background">
       <Flex height="100vh" justifyContent="center" alignItems="center">
@@ -37,6 +49,15 @@ export default function Homepage(): JSX.Element {
               <a>Jokes</a>
             </Link>
           </Text>
+          <UnorderedList color="brand.text">
+            {forecastDataLoaded ? (
+              forecastData?.forecasts?.map((forecast) => (
+                <ListItem>{forecast}</ListItem>
+              ))
+            ) : (
+              <Spinner />
+            )}
+          </UnorderedList>
         </VStack>
       </Flex>
     </Container>

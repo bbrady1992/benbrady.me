@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace server.Controllers
 {
+  public class WeatherForecastData
+  {
+    public string[] forecasts { get; set; }
+  }
+
   [ApiController]
   [Route("[controller]")]
   public class WeatherForecastController : ControllerBase
   {
-    private static readonly string[] Summaries = new[]
-    {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
     private readonly ILogger<WeatherForecastController> _logger;
 
     public WeatherForecastController(ILogger<WeatherForecastController> logger)
@@ -24,9 +25,15 @@ namespace server.Controllers
     }
 
     [HttpGet]
-    public IEnumerable<string> Get()
+    public async Task<ActionResult<WeatherForecastData>> Get()
     {
-      return new List<string> { "Hello", "World" };
+      _logger.LogInformation("Serving Hello, World endpoint");
+      string[] forecastData = { "Hello", "World" };
+      var data = new WeatherForecastData();
+      data.forecasts = forecastData;
+      _logger.LogInformation($"data is {data.forecasts[0]}");
+      _logger.LogInformation($"data is {data.forecasts[1]}");
+      return Ok(data);
     }
   }
 }
