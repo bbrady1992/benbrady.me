@@ -1,9 +1,9 @@
 function API_URL() {
   switch (process.env.NODE_ENV) {
     case 'production':
-      return "http://api:5000"
+      return "/api"
     case 'development':
-      return "https://localhost:5001"
+      return "https://localhost:5001/api"
 
   }
 }
