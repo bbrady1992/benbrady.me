@@ -2,6 +2,7 @@ import {
   Container,
   Flex,
   Heading,
+  Link,
   ListItem,
   OrderedList,
   Spinner,
@@ -9,6 +10,7 @@ import {
   TableContainer,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
@@ -21,6 +23,8 @@ import {
   GetAllSakes,
   GetAllSakesResponse,
 } from "../api/SakeTracker";
+
+import NextLink from "next/link";
 
 export default function SakeTracker() {
   const [sakeData, setSakeData] = useState<GetAllSakesResponse>(
@@ -72,6 +76,9 @@ export default function SakeTracker() {
                   </Tbody>
                 </Table>
               </TableContainer>
+              <NextLink href="/AddSake">
+                <Link color="brand.text">Add new sake</Link>
+              </NextLink>
             </>
           ) : (
             <Spinner color="brand.text" />

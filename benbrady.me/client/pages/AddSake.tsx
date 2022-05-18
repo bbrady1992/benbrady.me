@@ -7,13 +7,16 @@ import {
   Heading,
   HStack,
   Input,
+  Link,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Text,
   VStack,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
 import { AddNewSake, Sake } from "../api/SakeTracker";
 
 export default function AddSake(): JSX.Element {
@@ -85,6 +88,9 @@ export default function AddSake(): JSX.Element {
               </HStack>
             </VStack>
           </FormControl>
+          <NextLink href="/SakeTracker">
+            <Link color="brand.text">Return to sake list</Link>
+          </NextLink>
         </VStack>
       </Flex>
     </Container>
