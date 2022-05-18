@@ -1,4 +1,12 @@
-import { Heading, ListItem, OrderedList, Spinner } from "@chakra-ui/react";
+import {
+  Container,
+  Flex,
+  Heading,
+  ListItem,
+  OrderedList,
+  Spinner,
+  VStack,
+} from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import {
   BLANK_GET_ALL_SAKES_RESPONSE,
@@ -22,19 +30,26 @@ export default function SakeTracker() {
   }, [sakeData]);
 
   return (
-    <>
-      <Heading>Sake Tracker</Heading>
-      <OrderedList>
-        {sakeDataLoaded ? (
-          sakeData?.data?.map((sake) => (
-            <ListItem>
-              {sake.id} - {sake.bensRating} - {sake.jasonsRating} - {sake.cost}
-            </ListItem>
-          ))
-        ) : (
-          <Spinner />
-        )}
-      </OrderedList>
-    </>
+    <Container maxWidth="full" padding={0} bg="brand.background">
+      <Flex height="100vh" justifyContent="center" alignItems="center">
+        <VStack padding={4} spacing={4} textAlign="center">
+          <Heading size="2xl" color="brand.text">
+            Sake Tracker
+          </Heading>
+          <OrderedList color="brand.text">
+            {sakeDataLoaded ? (
+              sakeData?.data?.map((sake) => (
+                <ListItem>
+                  {sake.id} - {sake.bensRating} - {sake.jasonsRating} -{" "}
+                  {sake.cost}
+                </ListItem>
+              ))
+            ) : (
+              <Spinner />
+            )}
+          </OrderedList>
+        </VStack>
+      </Flex>
+    </Container>
   );
 }
