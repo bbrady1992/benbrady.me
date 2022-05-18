@@ -25,9 +25,19 @@ class AddSakeState {
 }
 
 type NameChangedAction = ["nameChanged", string];
+type TypeChangedAction = ["typeChanged", string];
+type BensRatingChangedAction = ["bensRatingChanged", string];
+type JasonsRatingChangedAction = ["jasonsRatingChanged", string];
+type CostChangedAction = ["costChanged", string];
 type CommitNewSakeAction = ["commitNewSake"];
 
-type AddSakeAction = NameChangedAction | CommitNewSakeAction;
+type AddSakeAction =
+  | NameChangedAction
+  | CommitNewSakeAction
+  | TypeChangedAction;
+//| BensRatingChangedAction
+//| JasonsRatingChangedAction
+//| CostChangedAction;
 
 function AddSakeReducer(
   state: AddSakeState,
@@ -43,8 +53,15 @@ function AddSakeReducer(
         sake: { ...state.sake, name: newName },
       };
     }
+    case "typeChanged": {
+      const [{}, newType] = action;
+      return {
+        ...state,
+        sake: { ...state.sake, type: newType },
+      };
+    }
     case "commitNewSake": {
-      console.log("Trying to save new sake");
+      console.log("Trying to save new sake:", { newSake: state.sake });
       AddNewSake(state.sake).then((data) =>
         console.log("Added new sake and received response:, data")
       );
@@ -67,6 +84,11 @@ export default function AddSake(): JSX.Element {
     []
   );
 
+  const onTypeChange = useCallback(
+    (event: any) => dispatch(["typeChanged", event.target.value]),
+    []
+  );
+
   const onSave = useCallback(() => dispatch(["commitNewSake"]), []);
 
   return (
@@ -77,7 +99,7 @@ export default function AddSake(): JSX.Element {
           <Heading size="2xl" color="brand.text">
             Add new sake
           </Heading>
-          {AddSakeForm(onNameChange)}
+          {AddSakeForm({ onNameChange, onTypeChange })}
           <Button colorScheme="green" onClick={onSave}>
             Save
           </Button>
@@ -90,7 +112,13 @@ export default function AddSake(): JSX.Element {
   );
 }
 
-function AddSakeForm(onNameChange: ChangeEventHandler<HTMLInputElement>) {
+interface AddSakeFormProps {
+  onNameChange: ChangeEventHandler<HTMLInputElement>;
+  onTypeChange: ChangeEventHandler<HTMLInputElement>;
+}
+
+function AddSakeForm(props: AddSakeFormProps) {
+  const { onNameChange, onTypeChange } = props;
   return (
     <>
       <SimpleGrid
@@ -119,6 +147,7 @@ function AddSakeForm(onNameChange: ChangeEventHandler<HTMLInputElement>) {
             <Input
               id="input-sake-type"
               type="text"
+              onChange={onTypeChange}
               placeholder="Type"
               required
             />
