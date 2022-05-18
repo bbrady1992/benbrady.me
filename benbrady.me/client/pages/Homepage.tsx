@@ -1,5 +1,13 @@
-import { Container, Flex, Heading, Img, Text, VStack } from "@chakra-ui/react";
-import Link from "next/link";
+import {
+  Container,
+  Flex,
+  Heading,
+  Img,
+  Link,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import NextLink from "next/link";
 import React from "react";
 
 export default function Homepage(): JSX.Element {
@@ -12,9 +20,9 @@ export default function Homepage(): JSX.Element {
           </Heading>
           <Img src="/images/random-itysl.gif" alt="RANDOM" />
           <Text color="brand.text">
-            <Link href="/Jokes">
-              <a>Jokes</a>
-            </Link>
+            <NextLink href="/Jokes">
+              <Link color="brand.text">Jokes</Link>
+            </NextLink>
           </Text>
         </VStack>
       </Flex>

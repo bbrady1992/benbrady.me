@@ -4,6 +4,8 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  Grid,
+  GridItem,
   Heading,
   HStack,
   Input,
@@ -13,6 +15,7 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  SimpleGrid,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -28,72 +31,94 @@ export default function AddSake(): JSX.Element {
           <Heading size="2xl" color="brand.text">
             Add new sake
           </Heading>
-          <FormControl color="brand.text">
-            <VStack padding={4} spacing={4}>
-              <HStack>
-                <FormLabel htmlFor="input-sake-name">Name</FormLabel>
-                <Input id="input-sake-name" type="text" required />
-              </HStack>
-              <HStack>
-                <FormLabel htmlFor="input-sake-type">Type</FormLabel>
-                <Input id="input-sake-type" type="text" />
-              </HStack>
-              <HStack>
-                <FormLabel htmlFor="input-bens-rating">Ben's Rating</FormLabel>
-                <NumberInput
-                  id="input-bens-rating"
-                  defaultValue={3}
-                  min={0}
-                  max={5}
-                >
-                  <NumberInputField />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              </HStack>
-              <HStack>
-                <FormLabel htmlFor="input-jasons-rating">
-                  Jason's Rating
-                </FormLabel>
-                <NumberInput
-                  id="input-jasons-rating"
-                  defaultValue={3}
-                  min={0}
-                  max={5}
-                >
-                  <NumberInputField />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              </HStack>
-
-              <HStack>
-                <FormLabel htmlFor="input-sake-cost">Cost</FormLabel>
-                <NumberInput
-                  id="input-sake-cost"
-                  defaultValue={15}
-                  precision={2}
-                  step={0.01}
-                >
-                  <NumberInputField />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              </HStack>
-            </VStack>
-          </FormControl>
+          {AddSakeForm()}
+          <Button colorScheme="green">Save</Button>
           <NextLink href="/SakeTracker">
             <Link color="brand.text">Return to sake list</Link>
           </NextLink>
         </VStack>
       </Flex>
     </Container>
+  );
+}
+
+function AddSakeForm() {
+  return (
+    <>
+      <SimpleGrid
+        columns={2}
+        columnGap={3}
+        rowGap={6}
+        width="full"
+        color="brand.text"
+      >
+        <GridItem colSpan={2}>
+          <FormControl>
+            <FormLabel htmlFor="input-sake-name">Name</FormLabel>
+            <Input id="input-sake-name" type="text" required />
+          </FormControl>
+        </GridItem>
+
+        <GridItem colSpan={2}>
+          <FormControl>
+            <FormLabel htmlFor="input-sake-type">Type</FormLabel>
+            <Input id="input-sake-type" type="text" required />
+          </FormControl>
+        </GridItem>
+
+        <GridItem colSpan={2}>
+          <FormControl>
+            <FormLabel htmlFor="input-bens-rating">Ben's Rating</FormLabel>
+            <NumberInput
+              id="input-bens-rating"
+              defaultValue={3}
+              min={0}
+              max={5}
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </FormControl>
+        </GridItem>
+
+        <GridItem colSpan={2}>
+          <FormControl>
+            <FormLabel htmlFor="input-jasons-rating">Jason's Rating</FormLabel>
+            <NumberInput
+              id="input-jasons-rating"
+              defaultValue={3}
+              min={0}
+              max={5}
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </FormControl>
+        </GridItem>
+        <GridItem colSpan={2}>
+          <FormLabel htmlFor="input-sake-cost">Cost</FormLabel>
+          <NumberInput
+            id="input-sake-cost"
+            defaultValue={15}
+            precision={2}
+            step={0.01}
+          >
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </GridItem>
+        <GridItem colSpan={1}></GridItem>
+      </SimpleGrid>
+    </>
   );
 }
 
