@@ -5,6 +5,13 @@ import {
   ListItem,
   OrderedList,
   Spinner,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
   UnorderedList,
   VStack,
 } from "@chakra-ui/react";
@@ -37,23 +44,38 @@ export default function SakeTracker() {
           <Heading size="2xl" color="brand.text">
             Sake Tracker
           </Heading>
-          <OrderedList color="brand.text">
-            {sakeDataLoaded ? (
-              sakeData?.data?.map((sake) => (
-                <ListItem>
-                  {sake.name}
-                  <UnorderedList>
-                    <ListItem>Type: {sake.type}</ListItem>
-                    <ListItem>Ben's Rating: {sake.bensRating}</ListItem>
-                    <ListItem>Jason's Rating: {sake.jasonsRating}</ListItem>
-                    <ListItem>Cost: {sake.cost}</ListItem>
-                  </UnorderedList>
-                </ListItem>
-              ))
-            ) : (
-              <Spinner />
-            )}
-          </OrderedList>
+          {sakeDataLoaded ? (
+            <>
+              <TableContainer color="brand.text">
+                <Table variant="simple">
+                  <Thead>
+                    <Tr>
+                      <Th>Name</Th>
+                      <Th>Type</Th>
+                      <Th>Ben's Rating</Th>
+                      <Th>Jason's Rating</Th>
+                      <Th>Cost</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {sakeData.data.map((sake) => {
+                      return (
+                        <Tr>
+                          <Td>{sake.name}</Td>
+                          <Td>{sake.type}</Td>
+                          <Td>{sake.bensRating}</Td>
+                          <Td>{sake.jasonsRating}</Td>
+                          <Td>{sake.cost}</Td>
+                        </Tr>
+                      );
+                    })}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+            </>
+          ) : (
+            <Spinner />
+          )}
         </VStack>
       </Flex>
     </Container>
