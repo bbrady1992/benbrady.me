@@ -38,7 +38,8 @@ namespace server
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "server", Version = "v1" });
       });
 
-      services.AddScoped<ISakeTrackerRepository, SakeTrackerRepository>();
+      services.AddAutoMapper(typeof(Startup));
+
       services.AddScoped<ISakeTrackerService, SakeTrackerService>();
     }
 

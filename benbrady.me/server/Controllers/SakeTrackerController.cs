@@ -25,9 +25,9 @@ namespace server.Controllers
     }
 
     [HttpGet("GetAllSakes")]
-    public async Task<ActionResult<ServiceResponse<GetSakeDTO>>> GetAllSakes()
+    public async Task<ActionResult<ServiceResponse<List<GetSakeDTO>>>> GetAllSakes()
     {
-      return Ok();
+      return Ok(await _sakeTrackerService.GetAll());
     }
   }
 }
