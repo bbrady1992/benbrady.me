@@ -74,7 +74,7 @@ export default function SakeTracker() {
               </TableContainer>
             </>
           ) : (
-            <Spinner />
+            <Spinner color="brand.text" />
           )}
         </VStack>
       </Flex>

@@ -1,5 +1,4 @@
-import internal from "stream";
-import { fetchFromApi } from "./ApiFetch";
+import { fetchFromApi, postToApi } from "./ApiFetch";
 
 export interface GetAllSakesResponse {
   data: Sake[];
@@ -14,7 +13,7 @@ export const BLANK_GET_ALL_SAKES_RESPONSE = {
 }
 
 export interface Sake {
-  id: string;
+  id?: string;
   name: string;
   type: string;
   bensRating: number;
@@ -24,5 +23,10 @@ export interface Sake {
 
 export function GetAllSakes(): Promise<GetAllSakesResponse> {
   return fetchFromApi("/SakeTracker/GetAllSakes")
+    .then(response => response.json());
+}
+
+export function AddNewSake(newSake: Sake) {
+  return postToApi("/SakeTracker/AddSake", JSON.stringify(newSake))
     .then(response => response.json());
 }
