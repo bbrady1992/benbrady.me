@@ -15,6 +15,8 @@ export const BLANK_GET_ALL_SAKES_RESPONSE = {
 
 export interface Sake {
   id: string;
+  name: string;
+  type: string;
   bensRating: number;
   jasonsRating: number;
   cost: number;

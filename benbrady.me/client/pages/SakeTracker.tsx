@@ -5,6 +5,7 @@ import {
   ListItem,
   OrderedList,
   Spinner,
+  UnorderedList,
   VStack,
 } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
@@ -40,8 +41,13 @@ export default function SakeTracker() {
             {sakeDataLoaded ? (
               sakeData?.data?.map((sake) => (
                 <ListItem>
-                  {sake.id} - {sake.bensRating} - {sake.jasonsRating} -{" "}
-                  {sake.cost}
+                  {sake.name}
+                  <UnorderedList>
+                    <ListItem>Type: {sake.type}</ListItem>
+                    <ListItem>Ben's Rating: {sake.bensRating}</ListItem>
+                    <ListItem>Jason's Rating: {sake.jasonsRating}</ListItem>
+                    <ListItem>Cost: {sake.cost}</ListItem>
+                  </UnorderedList>
                 </ListItem>
               ))
             ) : (
