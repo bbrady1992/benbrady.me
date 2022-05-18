@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using server.SakeTracker.Repository;
+using server.SakeTracker.Service;
 
 namespace server
 {
@@ -26,12 +28,18 @@ namespace server
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddEntityFrameworkSqlite().AddDbContext<SakeDbContext>();
+      // TODO (bbrady) - look into whether this can be removed, along with the 
+      // corresponding call in Configure()
       services.AddCors();
       services.AddControllers();
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "server", Version = "v1" });
       });
+
+      services.AddScoped<ISakeTrackerRepository, SakeTrackerRepository>();
+      services.AddScoped<ISakeTrackerService, SakeTrackerService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
