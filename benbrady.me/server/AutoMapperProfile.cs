@@ -9,6 +9,7 @@ namespace server
     public AutoMapperProfile()
     {
       CreateMap<Sake, GetSakeDTO>();
+      CreateMap<AddSakeDTO, Sake>();
     }
   }
 }

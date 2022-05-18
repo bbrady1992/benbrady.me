@@ -29,5 +29,11 @@ namespace server.Controllers
     {
       return Ok(await _sakeTrackerService.GetAll());
     }
+
+    [HttpPost("AddSake")]
+    public async Task<ActionResult<ServiceResponse<List<GetSakeDTO>>>> AddSake(AddSakeDTO newSake)
+    {
+      return Ok(await _sakeTrackerService.AddSake(newSake));
+    }
   }
 }

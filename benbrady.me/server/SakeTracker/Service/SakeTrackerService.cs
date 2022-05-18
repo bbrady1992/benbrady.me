@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using server.Models;
 using server.SakeTracker.DTOs;
+using server.SakeTracker.Models;
 using server.SakeTracker.Repository;
 
 namespace server.SakeTracker.Service
@@ -26,6 +27,16 @@ namespace server.SakeTracker.Service
       serviceResponse.Data = _sakeDbContext.Sakes.Select(sake =>
       _mapper.Map<GetSakeDTO>(sake)).ToList();
       return serviceResponse;
+    }
+
+    public async Task<ServiceResponse<List<GetSakeDTO>>> AddSake(AddSakeDTO newSake)
+    {
+      var serviceResponse = new ServiceResponse<List<GetSakeDTO>>();
+      Sake sake = _mapper.Map<Sake>(newSake);
+      _sakeDbContext.Add(sake);
+      await _sakeDbContext.SaveChangesAsync();
+      return await GetAll();
+
     }
   }
 }
