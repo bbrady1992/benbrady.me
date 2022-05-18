@@ -21,6 +21,14 @@ export interface Sake {
   cost: number;
 }
 
+export const BLANK_SAKE = {
+  name: "",
+  type: "",
+  bensRating: -1,
+  jasonsRating: -1,
+  cost: -1
+}
+
 export function GetAllSakes(): Promise<GetAllSakesResponse> {
   return fetchFromApi("/SakeTracker/GetAllSakes")
     .then(response => response.json());

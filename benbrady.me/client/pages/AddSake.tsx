@@ -4,10 +4,8 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  Grid,
   GridItem,
   Heading,
-  HStack,
   Input,
   Link,
   NumberDecrementStepper,
@@ -16,13 +14,61 @@ import {
   NumberInputField,
   NumberInputStepper,
   SimpleGrid,
-  Text,
   VStack,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { AddNewSake, Sake } from "../api/SakeTracker";
+import { ChangeEventHandler, useCallback, useReducer } from "react";
+import { AddNewSake, BLANK_SAKE, Sake } from "../api/SakeTracker";
+
+class AddSakeState {
+  sake: Sake = BLANK_SAKE;
+}
+
+type NameChangedAction = ["nameChanged", string];
+type CommitNewSakeAction = ["commitNewSake"];
+
+type AddSakeAction = NameChangedAction | CommitNewSakeAction;
+
+function AddSakeReducer(
+  state: AddSakeState,
+  action: AddSakeAction
+): AddSakeState {
+  switch (action[0]) {
+    case "nameChanged": {
+      const [{}, newName] = action;
+      console.log("AddSakeReducer", { state, action });
+
+      return {
+        ...state,
+        sake: { ...state.sake, name: newName },
+      };
+    }
+    case "commitNewSake": {
+      console.log("Trying to save new sake");
+      AddNewSake(state.sake).then((data) =>
+        console.log("Added new sake and received response:, data")
+      );
+      return {
+        ...state,
+      };
+    }
+  }
+}
 
 export default function AddSake(): JSX.Element {
+  const [state, dispatch] = useReducer(
+    AddSakeReducer,
+    null,
+    () => new AddSakeState()
+  );
+
+  const onNameChange = useCallback(
+    (event: any) => dispatch(["nameChanged", event.target.value]),
+    []
+  );
+
+  const onSave = useCallback(() => dispatch(["commitNewSake"]), []);
+
   return (
     <Container maxWidth="full" padding={0} bg="brand.background">
       <Flex height="100vh" justifyContent="center" alignItems="center">
@@ -31,8 +77,10 @@ export default function AddSake(): JSX.Element {
           <Heading size="2xl" color="brand.text">
             Add new sake
           </Heading>
-          {AddSakeForm()}
-          <Button colorScheme="green">Save</Button>
+          {AddSakeForm(onNameChange)}
+          <Button colorScheme="green" onClick={onSave}>
+            Save
+          </Button>
           <NextLink href="/SakeTracker">
             <Link color="brand.text">Return to sake list</Link>
           </NextLink>
@@ -42,7 +90,7 @@ export default function AddSake(): JSX.Element {
   );
 }
 
-function AddSakeForm() {
+function AddSakeForm(onNameChange: ChangeEventHandler<HTMLInputElement>) {
   return (
     <>
       <SimpleGrid
@@ -55,14 +103,25 @@ function AddSakeForm() {
         <GridItem colSpan={2}>
           <FormControl>
             <FormLabel htmlFor="input-sake-name">Name</FormLabel>
-            <Input id="input-sake-name" type="text" required />
+            <Input
+              id="input-sake-name"
+              type="text"
+              onChange={onNameChange}
+              placeholder="Name"
+              required
+            />
           </FormControl>
         </GridItem>
 
         <GridItem colSpan={2}>
           <FormControl>
             <FormLabel htmlFor="input-sake-type">Type</FormLabel>
-            <Input id="input-sake-type" type="text" required />
+            <Input
+              id="input-sake-type"
+              type="text"
+              placeholder="Type"
+              required
+            />
           </FormControl>
         </GridItem>
 
