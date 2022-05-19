@@ -1,0 +1,10 @@
+FROM mcr.microsoft.com/dotnet/sdk:5.0
+WORKDIR /app
+
+# Copy everything
+COPY . ./
+# Restore as distinct layers
+RUN dotnet restore
+RUN dotnet add package Microsoft.EntityFrameworkCore.Tools --version=5.0.13
+RUN dotnet add package Microsoft.EntityFrameworkCore.Design --version=5.0.13
+ENTRYPOINT ["dotnet", "ef", "database", "update"]
