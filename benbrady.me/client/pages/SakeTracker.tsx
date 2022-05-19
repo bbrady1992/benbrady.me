@@ -48,6 +48,9 @@ export default function SakeTracker() {
           <Heading size="2xl" color="brand.text">
             Sake Tracker
           </Heading>
+          <Heading size="md" as="em" color="brand.text">
+            Sekiro
+          </Heading>
           {sakeDataLoaded ? (
             <>
               <TableContainer color="brand.text">
