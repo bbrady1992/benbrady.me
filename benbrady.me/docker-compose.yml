@@ -24,6 +24,9 @@ services:
     image: bbrady1992/server:latest
     ports:
       - 5000:80
+    volumes:
+      - ./server/db:/app/db
+
   #subdomain:
   #  container_name: subdomain
   #  hostname: subdomain

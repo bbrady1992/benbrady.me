@@ -36,7 +36,6 @@ namespace server.SakeTracker.Service
       _sakeDbContext.Add(sake);
       await _sakeDbContext.SaveChangesAsync();
       return await GetAll();
-
     }
   }
 }

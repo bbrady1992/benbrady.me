@@ -12,7 +12,7 @@ namespace server.SakeTracker.Repository
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-      optionsBuilder.UseSqlite("Filename=SakeTracker.db");
+      optionsBuilder.UseSqlite("Filename=./db/SakeTracker.db");
     }
   }
 }
