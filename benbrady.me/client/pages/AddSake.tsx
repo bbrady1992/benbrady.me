@@ -17,47 +17,30 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { ChangeEventHandler, useCallback, useReducer } from "react";
+import { ChangeEventHandler, Dispatch, useCallback, useReducer } from "react";
 import { AddNewSake, BLANK_SAKE, Sake } from "../api/SakeTracker";
 
 class AddSakeState {
   sake: Sake = BLANK_SAKE;
 }
 
-type NameChangedAction = ["nameChanged", string];
-type TypeChangedAction = ["typeChanged", string];
-type BensRatingChangedAction = ["bensRatingChanged", string];
-type JasonsRatingChangedAction = ["jasonsRatingChanged", string];
-type CostChangedAction = ["costChanged", string];
+type SakeChangedAction = ["sakeChanged", Sake];
 type CommitNewSakeAction = ["commitNewSake"];
 
-type AddSakeAction =
-  | NameChangedAction
-  | CommitNewSakeAction
-  | TypeChangedAction;
-//| BensRatingChangedAction
-//| JasonsRatingChangedAction
-//| CostChangedAction;
+type AddSakeAction = SakeChangedAction | CommitNewSakeAction;
 
 function AddSakeReducer(
   state: AddSakeState,
   action: AddSakeAction
 ): AddSakeState {
   switch (action[0]) {
-    case "nameChanged": {
-      const [{}, newName] = action;
+    case "sakeChanged": {
+      const [{}, newSake] = action;
       console.log("AddSakeReducer", { state, action });
 
       return {
         ...state,
-        sake: { ...state.sake, name: newName },
-      };
-    }
-    case "typeChanged": {
-      const [{}, newType] = action;
-      return {
-        ...state,
-        sake: { ...state.sake, type: newType },
+        sake: newSake,
       };
     }
     case "commitNewSake": {
@@ -80,13 +63,33 @@ export default function AddSake(): JSX.Element {
   );
 
   const onNameChange = useCallback(
-    (event: any) => dispatch(["nameChanged", event.target.value]),
-    []
+    (event: any) =>
+      dispatch(["sakeChanged", { ...state.sake, name: event.target.value }]),
+    [state]
   );
 
   const onTypeChange = useCallback(
-    (event: any) => dispatch(["typeChanged", event.target.value]),
-    []
+    (event: any) =>
+      dispatch(["sakeChanged", { ...state.sake, type: event.target.value }]),
+    [state]
+  );
+
+  const onBensRatingChange = useCallback(
+    (_: string, rating: number) =>
+      dispatch(["sakeChanged", { ...state.sake, bensRating: rating }]),
+    [state]
+  );
+
+  const onJasonsRatingChange = useCallback(
+    (_: string, rating: number) =>
+      dispatch(["sakeChanged", { ...state.sake, jasonsRating: rating }]),
+    [state]
+  );
+
+  const onCostChange = useCallback(
+    (_: string, cost: number) =>
+      dispatch(["sakeChanged", { ...state.sake, cost: cost }]),
+    [state]
   );
 
   const onSave = useCallback(() => dispatch(["commitNewSake"]), []);
@@ -95,11 +98,16 @@ export default function AddSake(): JSX.Element {
     <Container maxWidth="full" padding={0} bg="brand.background">
       <Flex height="100vh" justifyContent="center" alignItems="center">
         <VStack padding={4} spacing={4} textAlign="center">
-          <Button onClick={AddSakeStub}>Add new sake</Button>
           <Heading size="2xl" color="brand.text">
             Add new sake
           </Heading>
-          {AddSakeForm({ onNameChange, onTypeChange })}
+          {AddSakeForm({
+            onNameChange,
+            onTypeChange,
+            onBensRatingChange,
+            onJasonsRatingChange,
+            onCostChange,
+          })}
           <Button colorScheme="green" onClick={onSave}>
             Save
           </Button>
@@ -115,10 +123,19 @@ export default function AddSake(): JSX.Element {
 interface AddSakeFormProps {
   onNameChange: ChangeEventHandler<HTMLInputElement>;
   onTypeChange: ChangeEventHandler<HTMLInputElement>;
+  onBensRatingChange: (valueAsString: string, value: number) => void;
+  onJasonsRatingChange: (valueAsString: string, value: number) => void;
+  onCostChange: (valueAsString: string, value: number) => void;
 }
 
 function AddSakeForm(props: AddSakeFormProps) {
-  const { onNameChange, onTypeChange } = props;
+  const {
+    onNameChange,
+    onTypeChange,
+    onBensRatingChange,
+    onJasonsRatingChange,
+    onCostChange,
+  } = props;
   return (
     <>
       <SimpleGrid
@@ -159,7 +176,7 @@ function AddSakeForm(props: AddSakeFormProps) {
             <FormLabel htmlFor="input-bens-rating">Ben's Rating</FormLabel>
             <NumberInput
               id="input-bens-rating"
-              defaultValue={3}
+              onChange={onBensRatingChange}
               min={0}
               max={5}
             >
@@ -177,7 +194,7 @@ function AddSakeForm(props: AddSakeFormProps) {
             <FormLabel htmlFor="input-jasons-rating">Jason's Rating</FormLabel>
             <NumberInput
               id="input-jasons-rating"
-              defaultValue={3}
+              onChange={onJasonsRatingChange}
               min={0}
               max={5}
             >
@@ -193,7 +210,7 @@ function AddSakeForm(props: AddSakeFormProps) {
           <FormLabel htmlFor="input-sake-cost">Cost</FormLabel>
           <NumberInput
             id="input-sake-cost"
-            defaultValue={15}
+            onChange={onCostChange}
             precision={2}
             step={0.01}
           >
@@ -207,19 +224,5 @@ function AddSakeForm(props: AddSakeFormProps) {
         <GridItem colSpan={1}></GridItem>
       </SimpleGrid>
     </>
-  );
-}
-
-function AddSakeStub() {
-  const newSake: Sake = {
-    name: "Stubby sake",
-    type: "Junmai Gaijin",
-    bensRating: 3,
-    jasonsRating: 4,
-    cost: 18.99,
-  };
-
-  AddNewSake(newSake).then((data) =>
-    console.log("Added sake and received response:", data)
   );
 }
