@@ -10,17 +10,30 @@ import {
   SimpleGrid,
   VStack,
 } from "@chakra-ui/react";
-import { useCallback, useReducer } from "react";
-import { BLANK_LOGIN_REQUEST, Login, LoginRequest } from "../api/SakeAuth";
+import { Dispatch, useCallback, useReducer } from "react";
+import {
+  BLANK_LOGIN_REQUEST,
+  Login,
+  LoginRequest,
+  LoginResponse,
+} from "../api/SakeAuth";
 
 class LoginState {
   loginRequest: LoginRequest = BLANK_LOGIN_REQUEST;
+  loginAttempted = false;
+  // TODO (bbrady) - add a loading member here so I can display a spinner while
+  // login processes
+  loginSucceeded = false;
 }
 
 type LoginInfoChangedAction = ["loginInfoChanged", LoginRequest];
-type CommitAction = ["sendLoginRequest"];
+type LoginRequestAction = ["sendLoginRequest", Dispatch<LoginRequestOutcome>];
+type LoginRequestOutcome = ["loginRequestOutcome", LoginResponse];
 
-type LoginAction = LoginInfoChangedAction | CommitAction;
+type LoginAction =
+  | LoginInfoChangedAction
+  | LoginRequestAction
+  | LoginRequestOutcome;
 
 function LoginInfoReducer(state: LoginState, action: LoginAction): LoginState {
   switch (action[0]) {
@@ -32,12 +45,20 @@ function LoginInfoReducer(state: LoginState, action: LoginAction): LoginState {
       };
     }
     case "sendLoginRequest": {
-      console.log("Sending login request");
-      Login(state.loginRequest).then((data) =>
-        console.log("Received login response", { data })
-      );
+      const [{}, dispatch] = action;
+      Login(state.loginRequest).then((data) => {
+        dispatch(["loginRequestOutcome", data]);
+      });
       return {
         ...state,
+        loginAttempted: true,
+      };
+    }
+    case "loginRequestOutcome": {
+      const [{}, loginResponse] = action;
+      return {
+        ...state,
+        loginSucceeded: loginResponse.success,
       };
     }
   }
@@ -68,7 +89,10 @@ export default function SakeLogin(): JSX.Element {
     [state]
   );
 
-  const onLoginClicked = useCallback(() => dispatch(["sendLoginRequest"]), []);
+  const onLoginClicked = useCallback(
+    () => dispatch(["sendLoginRequest", dispatch]),
+    []
+  );
 
   return (
     <Container maxWidth="full" padding={0} bg="brand.background">
@@ -117,7 +141,13 @@ export default function SakeLogin(): JSX.Element {
           <Button colorScheme="green" onClick={onLoginClicked}>
             Login
           </Button>
-          ;
+          {state.loginAttempted && state.loginSucceeded ? (
+            <Heading color="brand.text">Login succeeded!</Heading>
+          ) : state.loginAttempted && !state.loginSucceeded ? (
+            <Heading color="brand.text">Login failed.</Heading>
+          ) : (
+            <Heading color="brand.text">No login attempted</Heading>
+          )}
         </VStack>
       </Flex>
     </Container>
