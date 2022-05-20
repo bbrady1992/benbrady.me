@@ -3,8 +3,9 @@ WORKDIR /app
 
 # Copy everything
 COPY . ./
-# Restore as distinct layers
+# Restore as distinct layers - TODO can restore step be removed?
 RUN dotnet restore
-RUN dotnet add package Microsoft.EntityFrameworkCore.Tools --version=5.0.13
-RUN dotnet add package Microsoft.EntityFrameworkCore.Design --version=5.0.13
+ENV PATH $PATH:/root/.dotnet/tools
+RUN dotnet tool install --global dotnet-ef
+#ENTRYPOINT ["/bin/sh"]
 ENTRYPOINT ["dotnet", "ef", "database", "update"]
