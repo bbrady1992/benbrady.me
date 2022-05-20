@@ -8,6 +8,7 @@ import {
   Heading,
   Input,
   SimpleGrid,
+  Spinner,
   VStack,
 } from "@chakra-ui/react";
 import { Dispatch, useCallback, useReducer } from "react";
@@ -21,9 +22,9 @@ import {
 class LoginState {
   loginRequest: LoginRequest = BLANK_LOGIN_REQUEST;
   loginAttempted = false;
-  // TODO (bbrady) - add a loading member here so I can display a spinner while
-  // login processes
   loginSucceeded = false;
+  requestSent = false;
+  responseReceived = false;
 }
 
 type LoginInfoChangedAction = ["loginInfoChanged", LoginRequest];
@@ -52,6 +53,8 @@ function LoginInfoReducer(state: LoginState, action: LoginAction): LoginState {
       return {
         ...state,
         loginAttempted: true,
+        requestSent: true,
+        responseReceived: false,
       };
     }
     case "loginRequestOutcome": {
@@ -59,6 +62,7 @@ function LoginInfoReducer(state: LoginState, action: LoginAction): LoginState {
       return {
         ...state,
         loginSucceeded: loginResponse.success,
+        responseReceived: true,
       };
     }
   }
@@ -141,15 +145,20 @@ export default function SakeLogin(): JSX.Element {
           <Button colorScheme="green" onClick={onLoginClicked}>
             Login
           </Button>
-          {state.loginAttempted && state.loginSucceeded ? (
-            <Heading color="brand.text">Login succeeded!</Heading>
-          ) : state.loginAttempted && !state.loginSucceeded ? (
-            <Heading color="brand.text">Login failed.</Heading>
-          ) : (
-            <Heading color="brand.text">No login attempted</Heading>
-          )}
+          {RequestStatusIndicator(state)}
         </VStack>
       </Flex>
     </Container>
   );
+}
+
+function RequestStatusIndicator(state: LoginState): JSX.Element {
+  if (state.requestSent && !state.responseReceived) {
+    return <Spinner color="brand.text" />;
+  } else if (state.responseReceived && state.loginSucceeded) {
+    return <Heading color="brand.text">Login succeeded!</Heading>;
+  } else if (state.responseReceived && !state.loginSucceeded) {
+    return <Heading color="brand.text">Login failed.</Heading>;
+  }
+  return <></>;
 }
