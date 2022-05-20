@@ -103,7 +103,7 @@ namespace server.SakeTracker.Service
       var tokenDescriptor = new SecurityTokenDescriptor
       {
         Subject = new ClaimsIdentity(claims),
-        Expires = System.DateTime.Now.AddMinutes(15),
+        Expires = System.DateTime.UtcNow.AddMinutes(15),
         SigningCredentials = creds
       };
 
