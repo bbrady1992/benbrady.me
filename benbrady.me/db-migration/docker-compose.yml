@@ -4,11 +4,6 @@ services:
     container_name: db-migrater
     hostname: db-migrater
     image: db-migrater
-    build:
-      context: ../server
-      dockerfile: Dockerfile.db-migration
+    build: .
     volumes:
-      - ../server/db:/app/db
-    # TODO (bbrady) - remove these after shell test is done
-    stdin_open: true # docker run -i
-    tty: true        # docker run -t
+      - ../server:/app
