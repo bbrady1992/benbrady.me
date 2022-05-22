@@ -7,18 +7,19 @@ import {
   GridItem,
   Heading,
   Input,
-  Link,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
   SimpleGrid,
+  Text,
   VStack,
 } from "@chakra-ui/react";
-import NextLink from "next/link";
-import { ChangeEventHandler, Dispatch, useCallback, useReducer } from "react";
+import { ChangeEventHandler, useCallback, useContext, useReducer } from "react";
+import { SakeAuthStateContext } from "../api/SakeAuthContext";
 import { AddNewSake, BLANK_SAKE, Sake } from "../api/SakeTracker";
+import SakeTrackerParent from "../Components/SakeTrackerParent";
 
 class AddSakeState {
   sake: Sake = BLANK_SAKE;
@@ -56,6 +57,8 @@ function AddSakeReducer(
 }
 
 export default function AddSake(): JSX.Element {
+  const sakeAuthState = useContext(SakeAuthStateContext);
+
   const [state, dispatch] = useReducer(
     AddSakeReducer,
     null,
@@ -95,28 +98,31 @@ export default function AddSake(): JSX.Element {
   const onSave = useCallback(() => dispatch(["commitNewSake"]), []);
 
   return (
-    <Container maxWidth="full" padding={0} bg="brand.background">
-      <Flex height="100vh" justifyContent="center" alignItems="center">
-        <VStack padding={4} spacing={4} textAlign="center">
-          <Heading size="2xl" color="brand.text">
-            Add new sake
-          </Heading>
-          {AddSakeForm({
-            onNameChange,
-            onTypeChange,
-            onBensRatingChange,
-            onJasonsRatingChange,
-            onCostChange,
-          })}
-          <Button colorScheme="green" onClick={onSave}>
-            Save
-          </Button>
-          <NextLink href="/SakeTracker">
-            <Link color="brand.text">Return to sake list</Link>
-          </NextLink>
-        </VStack>
-      </Flex>
-    </Container>
+    <SakeTrackerParent>
+      <Container maxWidth="full" padding={0} bg="brand.background">
+        <Flex height="100vh" justifyContent="center" alignItems="center">
+          {sakeAuthState.signed_in ? (
+            <VStack padding={4} spacing={4} textAlign="center">
+              <Heading size="2xl" color="brand.text">
+                Add new sake
+              </Heading>
+              {AddSakeForm({
+                onNameChange,
+                onTypeChange,
+                onBensRatingChange,
+                onJasonsRatingChange,
+                onCostChange,
+              })}
+              <Button colorScheme="green" onClick={onSave}>
+                Save
+              </Button>
+            </VStack>
+          ) : (
+            <Text color="brand.text">Please sign in to add new sakes</Text>
+          )}
+        </Flex>
+      </Container>
+    </SakeTrackerParent>
   );
 }
 

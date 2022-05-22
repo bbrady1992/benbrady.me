@@ -3,21 +3,17 @@ import {
   Flex,
   Heading,
   Link,
-  ListItem,
-  OrderedList,
   Spinner,
   Table,
   TableContainer,
   Tbody,
   Td,
-  Text,
   Th,
   Thead,
   Tr,
-  UnorderedList,
   VStack,
 } from "@chakra-ui/react";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   BLANK_GET_ALL_SAKES_RESPONSE,
   GetAllSakes,
@@ -25,11 +21,9 @@ import {
 } from "../api/SakeTracker";
 
 import NextLink from "next/link";
-import { SakeAuthStateContext } from "../api/SakeAuthContext";
+import SakeTrackerParent from "../Components/SakeTrackerParent";
 
 export default function SakeTracker() {
-  const sakeAuthState = useContext(SakeAuthStateContext);
-
   const [sakeData, setSakeData] = useState<GetAllSakesResponse>(
     BLANK_GET_ALL_SAKES_RESPONSE
   );
@@ -45,57 +39,51 @@ export default function SakeTracker() {
   }, [sakeData]);
 
   return (
-    <Container maxWidth="full" padding={0} bg="brand.background">
-      <Flex height="100vh" justifyContent="center" alignItems="center">
-        <VStack padding={4} spacing={4} textAlign="center">
-          <Heading size="2xl" color="brand.text">
-            {sakeAuthState.signed_in
-              ? `Signed in as ${sakeAuthState.username}`
-              : "Not signed in"}
-          </Heading>
-          <Heading size="2xl" color="brand.text">
-            Sake Tracker
-          </Heading>
-          <Heading size="md" as="em" color="brand.text">
-            Sekiro
-          </Heading>
-          {sakeDataLoaded ? (
-            <>
-              <TableContainer color="brand.text">
-                <Table variant="simple">
-                  <Thead>
-                    <Tr>
-                      <Th>Name</Th>
-                      <Th>Type</Th>
-                      <Th>Ben's Rating</Th>
-                      <Th>Jason's Rating</Th>
-                      <Th>Cost</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {sakeData.data.map((sake) => {
-                      return (
-                        <Tr>
-                          <Td>{sake.name}</Td>
-                          <Td>{sake.type}</Td>
-                          <Td>{sake.bensRating}</Td>
-                          <Td>{sake.jasonsRating}</Td>
-                          <Td>{sake.cost}</Td>
-                        </Tr>
-                      );
-                    })}
-                  </Tbody>
-                </Table>
-              </TableContainer>
-              <NextLink href="/AddSake">
-                <Link color="brand.text">Add new sake</Link>
-              </NextLink>
-            </>
-          ) : (
-            <Spinner color="brand.text" />
-          )}
-        </VStack>
-      </Flex>
-    </Container>
+    <SakeTrackerParent>
+      <Container maxWidth="full" padding={0} bg="brand.background">
+        <Flex height="100vh" justifyContent="center" alignItems="center">
+          <VStack padding={4} spacing={4} textAlign="center">
+            <Heading size="md" as="em" color="brand.text">
+              Sekiro
+            </Heading>
+            {sakeDataLoaded ? (
+              <>
+                <TableContainer color="brand.text">
+                  <Table variant="simple">
+                    <Thead>
+                      <Tr>
+                        <Th>Name</Th>
+                        <Th>Type</Th>
+                        <Th>Ben's Rating</Th>
+                        <Th>Jason's Rating</Th>
+                        <Th>Cost</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {sakeData.data.map((sake) => {
+                        return (
+                          <Tr>
+                            <Td>{sake.name}</Td>
+                            <Td>{sake.type}</Td>
+                            <Td>{sake.bensRating}</Td>
+                            <Td>{sake.jasonsRating}</Td>
+                            <Td>{sake.cost}</Td>
+                          </Tr>
+                        );
+                      })}
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+                <NextLink href="/AddSake">
+                  <Link color="brand.text">Add new sake</Link>
+                </NextLink>
+              </>
+            ) : (
+              <Spinner color="brand.text" />
+            )}
+          </VStack>
+        </Flex>
+      </Container>
+    </SakeTrackerParent>
   );
 }

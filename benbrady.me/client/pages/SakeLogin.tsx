@@ -5,11 +5,8 @@ import {
   FormControl,
   FormLabel,
   GridItem,
-  Heading,
   Input,
-  Link,
   SimpleGrid,
-  Spinner,
   VStack,
 } from "@chakra-ui/react";
 import { useCallback, useContext, useState } from "react";
@@ -18,7 +15,7 @@ import {
   SakeAuthDispatchContext,
   SakeAuthStateContext,
 } from "../api/SakeAuthContext";
-import NextLink from "next/link";
+import SakeTrackerParent from "../Components/SakeTrackerParent";
 
 export default function SakeLogin(): JSX.Element {
   const authState = useContext(SakeAuthStateContext);
@@ -47,68 +44,54 @@ export default function SakeLogin(): JSX.Element {
     [authStateDispatch, loginRequest]
   );
 
-  const OnLogoutClicked = useCallback(
-    () => authStateDispatch(["logoutRequest"]),
-    []
-  );
-
   return (
-    <Container maxWidth="full" padding={0} bg="brand.background">
-      <Flex height="100vh" justifyContent="center" alignItems="center">
-        <VStack padding={4} spacing={4} textAlign="center">
-          <Heading size="xl" color="brand.text">
-            Sign into Sake Tracker
-          </Heading>
-          <SimpleGrid
-            columns={2}
-            columnGap={3}
-            rowGap={6}
-            width="full"
-            color="brand.text"
-          >
-            <GridItem colSpan={2}>
-              <FormControl>
-                <FormLabel htmlFor="input-sake-login-username">
-                  Username
-                </FormLabel>
-                <Input
-                  id="input-sake-login-username"
-                  onChange={onUsernameChange}
-                  type="text"
-                  placeholder="Username"
-                  required
-                />
-              </FormControl>
-            </GridItem>
+    <SakeTrackerParent>
+      <Container maxWidth="full" padding={0} bg="brand.background">
+        <Flex height="100vh" justifyContent="center" alignItems="center">
+          <VStack padding={4} spacing={8} textAlign="center">
+            <SimpleGrid
+              columns={2}
+              columnGap={3}
+              rowGap={6}
+              width="full"
+              color="brand.text"
+            >
+              <GridItem colSpan={2}>
+                <FormControl>
+                  <FormLabel htmlFor="input-sake-login-username">
+                    Username
+                  </FormLabel>
+                  <Input
+                    id="input-sake-login-username"
+                    onChange={onUsernameChange}
+                    type="text"
+                    placeholder="Username"
+                    required
+                  />
+                </FormControl>
+              </GridItem>
 
-            <GridItem colSpan={2}>
-              <FormControl>
-                <FormLabel htmlFor="input-sake-login-password">
-                  Password
-                </FormLabel>
-                <Input
-                  id="input-sake-login-password"
-                  onChange={onPasswordChange}
-                  type="password"
-                  placeholder="Password"
-                  required
-                />
-              </FormControl>
-            </GridItem>
-          </SimpleGrid>
-          <Button colorScheme="green" onClick={onLoginClicked}>
-            Login
-          </Button>
-          {authState.signed_in && (
-            <Button colorScheme="red" onClick={OnLogoutClicked}>
-              Logout
+              <GridItem colSpan={2}>
+                <FormControl>
+                  <FormLabel htmlFor="input-sake-login-password">
+                    Password
+                  </FormLabel>
+                  <Input
+                    id="input-sake-login-password"
+                    onChange={onPasswordChange}
+                    type="password"
+                    placeholder="Password"
+                    required
+                  />
+                </FormControl>
+              </GridItem>
+            </SimpleGrid>
+            <Button colorScheme="green" onClick={onLoginClicked}>
+              Login
             </Button>
-          )}
-          <NextLink href="/SakeTracker">
-            <Link color="brand.text">Sake Tracker</Link>
-          </NextLink>
-        </VStack>
-      </Flex>
-    </Container>
+          </VStack>
+        </Flex>
+      </Container>
+    </SakeTrackerParent>
   );
 }
