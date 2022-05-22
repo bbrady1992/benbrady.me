@@ -11,13 +11,17 @@ import {
   Spinner,
   VStack,
 } from "@chakra-ui/react";
-import { Dispatch, useCallback, useReducer } from "react";
+import { Dispatch, useCallback, useContext, useReducer } from "react";
 import {
   BLANK_LOGIN_REQUEST,
   Login,
   LoginRequest,
   LoginResponse,
 } from "../api/SakeAuth";
+import {
+  SakeAuthDispatchContext,
+  SakeAuthLoginRequestOutcome,
+} from "../api/SakeAuthContext";
 
 class LoginState {
   loginRequest: LoginRequest = BLANK_LOGIN_REQUEST;
@@ -28,8 +32,16 @@ class LoginState {
 }
 
 type LoginInfoChangedAction = ["loginInfoChanged", LoginRequest];
-type LoginRequestAction = ["sendLoginRequest", Dispatch<LoginRequestOutcome>];
-type LoginRequestOutcome = ["loginRequestOutcome", LoginResponse];
+type LoginRequestAction = [
+  "sendLoginRequest",
+  Dispatch<LoginRequestOutcome>,
+  Dispatch<SakeAuthLoginRequestOutcome>
+];
+type LoginRequestOutcome = [
+  "loginRequestOutcome",
+  LoginResponse,
+  Dispatch<SakeAuthLoginRequestOutcome>
+];
 
 type LoginAction =
   | LoginInfoChangedAction
@@ -46,9 +58,9 @@ function LoginInfoReducer(state: LoginState, action: LoginAction): LoginState {
       };
     }
     case "sendLoginRequest": {
-      const [{}, dispatch] = action;
+      const [{}, dispatch, authDispatch] = action;
       Login(state.loginRequest).then((data) => {
-        dispatch(["loginRequestOutcome", data]);
+        dispatch(["loginRequestOutcome", data, authDispatch]);
       });
       return {
         ...state,
@@ -58,7 +70,11 @@ function LoginInfoReducer(state: LoginState, action: LoginAction): LoginState {
       };
     }
     case "loginRequestOutcome": {
-      const [{}, loginResponse] = action;
+      const [{}, loginResponse, authDispatch] = action;
+      // TODO (bbrady) - this dispatch is happening, but the resulting state
+      // is not being assigned back to the context state, so username is not
+      // updating in the context
+      authDispatch(["loginRequestOutcome", loginResponse]);
       return {
         ...state,
         loginSucceeded: loginResponse.success,
@@ -69,6 +85,8 @@ function LoginInfoReducer(state: LoginState, action: LoginAction): LoginState {
 }
 
 export default function SakeLogin(): JSX.Element {
+  const authStateDispatch = useContext(SakeAuthDispatchContext);
+
   const [state, dispatch] = useReducer(
     LoginInfoReducer,
     null,
@@ -94,7 +112,7 @@ export default function SakeLogin(): JSX.Element {
   );
 
   const onLoginClicked = useCallback(
-    () => dispatch(["sendLoginRequest", dispatch]),
+    () => dispatch(["sendLoginRequest", dispatch, authStateDispatch]),
     []
   );
 
