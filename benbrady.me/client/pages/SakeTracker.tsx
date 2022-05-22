@@ -17,7 +17,7 @@ import {
   UnorderedList,
   VStack,
 } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import {
   BLANK_GET_ALL_SAKES_RESPONSE,
   GetAllSakes,
@@ -25,8 +25,11 @@ import {
 } from "../api/SakeTracker";
 
 import NextLink from "next/link";
+import { SakeAuthStateContext } from "../api/SakeAuthContext";
 
 export default function SakeTracker() {
+  const sakeAuthState = useContext(SakeAuthStateContext);
+
   const [sakeData, setSakeData] = useState<GetAllSakesResponse>(
     BLANK_GET_ALL_SAKES_RESPONSE
   );
@@ -45,6 +48,11 @@ export default function SakeTracker() {
     <Container maxWidth="full" padding={0} bg="brand.background">
       <Flex height="100vh" justifyContent="center" alignItems="center">
         <VStack padding={4} spacing={4} textAlign="center">
+          <Heading size="2xl" color="brand.text">
+            {sakeAuthState.signed_in
+              ? `Signed in as ${sakeAuthState.username}`
+              : "Not signed in"}
+          </Heading>
           <Heading size="2xl" color="brand.text">
             Sake Tracker
           </Heading>
