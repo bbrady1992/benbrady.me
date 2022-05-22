@@ -47,6 +47,11 @@ export default function SakeLogin(): JSX.Element {
     [authStateDispatch, loginRequest]
   );
 
+  const OnLogoutClicked = useCallback(
+    () => authStateDispatch(["logoutRequest"]),
+    []
+  );
+
   return (
     <Container maxWidth="full" padding={0} bg="brand.background">
       <Flex height="100vh" justifyContent="center" alignItems="center">
@@ -94,6 +99,11 @@ export default function SakeLogin(): JSX.Element {
           <Button colorScheme="green" onClick={onLoginClicked}>
             Login
           </Button>
+          {authState.signed_in && (
+            <Button colorScheme="red" onClick={OnLogoutClicked}>
+              Logout
+            </Button>
+          )}
           <NextLink href="/SakeTracker">
             <Link color="brand.text">Sake Tracker</Link>
           </NextLink>
@@ -102,19 +112,3 @@ export default function SakeLogin(): JSX.Element {
     </Container>
   );
 }
-
-//function RequestStatusIndicator(state: LoginState): JSX.Element {
-//  if (state.requestSent && !state.responseReceived) {
-//    return <Spinner color="brand.text" />;
-//  } else if (state.responseReceived && state.loginSucceeded) {
-//    return (
-//      <Heading color="brand.text">
-//        Login succeeded! Signed in as {state.authState?.username ?? "undefined"}
-//      </Heading>
-//    );
-//  } else if (state.responseReceived && !state.loginSucceeded) {
-//    return <Heading color="brand.text">Login failed.</Heading>;
-//  }
-//  return <></>;
-//}
-//

@@ -8,7 +8,7 @@ import {
   SakeAuthState,
   SakeAuthDispatchContext,
 } from "../api/SakeAuthContext";
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 
 const colors = {
   brand: {
@@ -27,6 +27,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     SakeAuthReducer,
     DEFAULT_SAKE_AUTH_STATE
   );
+  useEffect(() => authDispatch(["initialize"]), []);
   return (
     <SakeAuthStateContext.Provider value={authState}>
       <SakeAuthDispatchContext.Provider value={authDispatch}>
