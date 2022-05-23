@@ -24,8 +24,16 @@ namespace server.SakeTracker.Service
     public async Task<ServiceResponse<List<GetSakeDTO>>> GetAll()
     {
       var serviceResponse = new ServiceResponse<List<GetSakeDTO>>();
-      serviceResponse.Data = _sakeDbContext.Sakes.Select(sake =>
-      _mapper.Map<GetSakeDTO>(sake)).ToList();
+      try
+      {
+        serviceResponse.Data = _sakeDbContext.Sakes.Select(sake =>
+          _mapper.Map<GetSakeDTO>(sake)).ToList();
+      }
+      catch (Exception e)
+      {
+        serviceResponse.Success = false;
+        serviceResponse.Message = e.Message;
+      }
       return serviceResponse;
     }
 

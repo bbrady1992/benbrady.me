@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +25,15 @@ namespace server.Controllers
     [HttpGet("GetAllSakes")]
     public async Task<ActionResult<ServiceResponse<List<GetSakeDTO>>>> GetAllSakes()
     {
-      return Ok(await _sakeTrackerService.GetAll());
+      var response = await _sakeTrackerService.GetAll();
+      if (response.Success)
+      {
+        return Ok(response);
+      }
+      else
+      {
+        return StatusCode(500, response);
+      }
     }
 
     [Authorize(Roles = "SakeUser,SakeAdmin,SakeOwner")]
