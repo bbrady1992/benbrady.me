@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -41,6 +42,18 @@ namespace server.Controllers
     public async Task<ActionResult<ServiceResponse<List<GetSakeDTO>>>> AddSake(AddSakeDTO newSake)
     {
       return Ok(await _sakeTrackerService.AddSake(newSake));
+    }
+
+    [Authorize(Roles = "SakeOwner")]
+    [HttpPost("DeleteSake")]
+    public async Task<ActionResult<ServiceResponse<List<GetSakeDTO>>>> DeleteSake(Guid Id)
+    {
+      var response = await _sakeTrackerService.DeleteSake(Id);
+      if (response.Data == null)
+      {
+        return NotFound(response);
+      }
+      return Ok(response);
     }
   }
 }

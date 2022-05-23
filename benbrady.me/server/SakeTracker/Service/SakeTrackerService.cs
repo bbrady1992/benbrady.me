@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using server.Models;
 using server.SakeTracker.DTOs;
 using server.SakeTracker.Models;
@@ -44,6 +45,25 @@ namespace server.SakeTracker.Service
       _sakeDbContext.Add(sake);
       await _sakeDbContext.SaveChangesAsync();
       return await GetAll();
+    }
+
+    public async Task<ServiceResponse<List<GetSakeDTO>>> DeleteSake(Guid Id)
+    {
+      var serviceResponse = new ServiceResponse<List<GetSakeDTO>>();
+      try
+      {
+        Sake sake = await _sakeDbContext.Sakes.FirstAsync(sake => sake.Id == Id);
+        _sakeDbContext.Sakes.Remove(sake);
+        await _sakeDbContext.SaveChangesAsync();
+        var allSakes = await GetAll();
+        serviceResponse.Data = allSakes.Data;
+      }
+      catch (Exception ex)
+      {
+        serviceResponse.Success = false;
+        serviceResponse.Message = ex.Message;
+      }
+      return serviceResponse;
     }
   }
 }

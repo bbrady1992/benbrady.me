@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using server.Models;
@@ -8,5 +9,6 @@ namespace server.SakeTracker.Service
   {
     Task<ServiceResponse<List<GetSakeDTO>>> GetAll();
     Task<ServiceResponse<List<GetSakeDTO>>> AddSake(AddSakeDTO newSake);
+    Task<ServiceResponse<List<GetSakeDTO>>> DeleteSake(Guid Id);
   }
 }
