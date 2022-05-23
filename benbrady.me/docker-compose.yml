@@ -14,14 +14,14 @@ services:
     container_name: client
     hostname: client
     build: client
-    image: bbrady1992/personal-site:latest
+    image: bbrady1992/ben-brady-me-client:latest
     ports:
       - 3000:3000
   server:
     container_name: server
     hostname: server
     build: server
-    image: bbrady1992/server:latest
+    image: bbrady1992/ben-brady-me-server:latest
     ports:
       - 5000:80
     volumes:
