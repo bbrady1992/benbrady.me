@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using server.Models;
@@ -30,6 +31,7 @@ namespace server.Controllers
       return Ok(await _sakeTrackerService.GetAll());
     }
 
+    [Authorize(Roles = "SakeUser,SakeAdmin,SakeOwner")]
     [HttpPost("AddSake")]
     public async Task<ActionResult<ServiceResponse<List<GetSakeDTO>>>> AddSake(AddSakeDTO newSake)
     {

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.Models;
 using server.SakeTracker.DTOs;
@@ -21,7 +23,7 @@ namespace server.SakeTracker.Controllers
       _authService = authService;
     }
 
-    // TODO (bbrady) - lock down endpoint to admins only
+    [Authorize(Roles = "SakeOwner")]
     [HttpPost("Register")]
     public async Task<ActionResult<ServiceResponse<Guid>>> Register(RegisterUserDTO request)
     {
