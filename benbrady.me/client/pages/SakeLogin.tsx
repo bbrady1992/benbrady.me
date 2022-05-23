@@ -27,7 +27,6 @@ export default function SakeLogin(): JSX.Element {
   const onUsernameChange = useCallback(
     (event: any) => {
       const newLoginRequest = { ...loginRequest, username: event.target.value };
-      console.log("Set username", { newLoginRequest });
       setLoginRequest({ ...loginRequest, username: event.target.value });
     },
     [loginRequest]

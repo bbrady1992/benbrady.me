@@ -58,7 +58,6 @@ export function SakeAuthReducer(state: SakeAuthState, action: SakeAuthAction): S
     }
     case "sendLoginRequest": {
       const [{ }, loginRequest, dispatch] = action;
-      console.log("Sending login request", { loginRequest })
       Login(loginRequest).then(data => dispatch(["loginRequestOutcome", data]));
       return {
         ...state,
