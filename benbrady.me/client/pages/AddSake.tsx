@@ -26,7 +26,7 @@ class AddSakeState {
 }
 
 type SakeChangedAction = ["sakeChanged", Sake];
-type CommitNewSakeAction = ["commitNewSake"];
+type CommitNewSakeAction = ["commitNewSake", string | undefined];
 
 type AddSakeAction = SakeChangedAction | CommitNewSakeAction;
 
@@ -45,8 +45,9 @@ function AddSakeReducer(
       };
     }
     case "commitNewSake": {
+      const [{}, token] = action;
       console.log("Trying to save new sake:", { newSake: state.sake });
-      AddNewSake(state.sake).then((data) =>
+      AddNewSake(state.sake, token ?? "").then((data) =>
         console.log("Added new sake and received response:, data")
       );
       return {
@@ -95,7 +96,10 @@ export default function AddSake(): JSX.Element {
     [state]
   );
 
-  const onSave = useCallback(() => dispatch(["commitNewSake"]), []);
+  const onSave = useCallback(
+    () => dispatch(["commitNewSake", sakeAuthState.token]),
+    []
+  );
 
   return (
     <SakeTrackerParent>

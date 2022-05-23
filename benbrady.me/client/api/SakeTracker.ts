@@ -34,7 +34,7 @@ export function GetAllSakes(): Promise<GetAllSakesResponse> {
     .then(response => response.json());
 }
 
-export function AddNewSake(newSake: Sake) {
-  return postToApi("/SakeTracker/AddSake", JSON.stringify(newSake))
+export function AddNewSake(newSake: Sake, token: string): Promise<GetAllSakesResponse> {
+  return postToApi("/SakeTracker/AddSake", JSON.stringify(newSake), token)
     .then(response => response.json());
 }

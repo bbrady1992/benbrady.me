@@ -3,12 +3,14 @@ import { Login, LoginRequest, LoginResponse } from "./SakeAuth";
 import jwtDecode from "jwt-decode";
 
 export class SakeAuthState {
+  token: string | undefined;
   username: string | undefined;
   signed_in: boolean = false;
   failed_logins: number = 0;
 }
 
 export const DEFAULT_SAKE_AUTH_STATE: SakeAuthState = {
+  token: undefined,
   username: undefined,
   signed_in: false,
   failed_logins: 0
@@ -38,6 +40,7 @@ export function SakeAuthReducer(state: SakeAuthState, action: SakeAuthAction): S
           const decoded_token: JwtToken = jwtDecode(token);
           return {
             ...state,
+            token: token,
             username: decoded_token.unique_name,
             signed_in: true
           }
@@ -69,6 +72,7 @@ export function SakeAuthReducer(state: SakeAuthState, action: SakeAuthAction): S
           TokenManager.StoreToken(loginResponse.data);
           return {
             ...state,
+            token: loginResponse.data,
             username: decoded_token.unique_name,
             signed_in: true
           }

@@ -18,13 +18,14 @@ export function fetchFromApi(endpoint: string): Promise<Response> {
   return fetch(url, { headers: fetchHeaders });
 }
 
-export function postToApi(endpoint: string, jsonBody: string): Promise<Response> {
+export function postToApi(endpoint: string, jsonBody: string, token?: string): Promise<Response> {
   const url = `${API_URL()}${endpoint}`;
   return fetch(url, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
     },
     body: jsonBody
   })
