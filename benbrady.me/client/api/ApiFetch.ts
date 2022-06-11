@@ -30,3 +30,15 @@ export function postToApi(endpoint: string, jsonBody: string, token?: string): P
     body: jsonBody
   })
 }
+
+export function deleteToApi(endpoint: string, params: URLSearchParams, token?: string): Promise<Response> {
+  const url = `${API_URL()}${endpoint}?${params}`;
+  return fetch(url, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+  })
+}

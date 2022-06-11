@@ -1,4 +1,5 @@
 import {
+  CloseButton,
   Container,
   Flex,
   Heading,
@@ -13,17 +14,21 @@ import {
   Tr,
   VStack,
 } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import {
   BLANK_GET_ALL_SAKES_RESPONSE,
+  DeleteSake,
   GetAllSakes,
   GetAllSakesResponse,
 } from "../api/SakeTracker";
 
 import NextLink from "next/link";
 import SakeTrackerParent from "../Components/SakeTrackerParent";
+import { SakeAuthStateContext } from "../api/SakeAuthContext";
 
 export default function SakeTracker() {
+  const sakeAuthState = useContext(SakeAuthStateContext);
+
   const [sakeData, setSakeData] = useState<GetAllSakesResponse>(
     BLANK_GET_ALL_SAKES_RESPONSE
   );
@@ -37,6 +42,11 @@ export default function SakeTracker() {
   const sakeDataLoaded = useMemo(() => {
     return sakeData != BLANK_GET_ALL_SAKES_RESPONSE;
   }, [sakeData]);
+
+  const deleteSakeCallback = useCallback((id: string) => {
+    console.log("deleteSakeCallback", { id });
+    DeleteSake(id, sakeAuthState.token ?? "");
+  }, []);
 
   return (
     <SakeTrackerParent>
@@ -52,6 +62,7 @@ export default function SakeTracker() {
                   <Table variant="simple">
                     <Thead>
                       <Tr>
+                        {sakeAuthState.signed_in && <Th></Th>}
                         <Th>Name</Th>
                         <Th>Type</Th>
                         <Th>Ben's Rating</Th>
@@ -62,7 +73,20 @@ export default function SakeTracker() {
                     <Tbody>
                       {sakeData.data.map((sake) => {
                         return (
-                          <Tr>
+                          <Tr key={sake.id}>
+                            {sakeAuthState.signed_in && (
+                              <Td>
+                                <CloseButton
+                                  color="red"
+                                  onClick={() => {
+                                    console.log("In delete sake callback", {
+                                      sake,
+                                    });
+                                    deleteSakeCallback(sake.id ?? "");
+                                  }}
+                                />
+                              </Td>
+                            )}
                             <Td>{sake.name}</Td>
                             <Td>{sake.type}</Td>
                             <Td>{sake.bensRating}</Td>

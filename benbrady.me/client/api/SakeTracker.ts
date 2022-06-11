@@ -1,4 +1,4 @@
-import { fetchFromApi, postToApi } from "./ApiFetch";
+import { deleteToApi, fetchFromApi, postToApi } from "./ApiFetch";
 
 export interface GetAllSakesResponse {
   data: Sake[];
@@ -36,5 +36,10 @@ export function GetAllSakes(): Promise<GetAllSakesResponse> {
 
 export function AddNewSake(newSake: Sake, token: string): Promise<GetAllSakesResponse> {
   return postToApi("/SakeTracker/AddSake", JSON.stringify(newSake), token)
+    .then(response => response.json());
+}
+
+export function DeleteSake(Id: string, token: string): Promise<GetAllSakesResponse> {
+  return deleteToApi("/SakeTracker/DeleteSake", new URLSearchParams({ Id }), token)
     .then(response => response.json());
 }

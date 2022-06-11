@@ -45,8 +45,8 @@ namespace server.Controllers
     }
 
     [Authorize(Roles = "SakeOwner")]
-    [HttpPost("DeleteSake")]
-    public async Task<ActionResult<ServiceResponse<List<GetSakeDTO>>>> DeleteSake(Guid Id)
+    [HttpDelete("DeleteSake")]
+    public async Task<ActionResult<ServiceResponse<List<GetSakeDTO>>>> DeleteSake([FromQuery] Guid Id)
     {
       var response = await _sakeTrackerService.DeleteSake(Id);
       if (response.Data == null)
