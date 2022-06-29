@@ -1,4 +1,11 @@
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Button,
   CloseButton,
   Container,
   Flex,
@@ -12,9 +19,17 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   BLANK_GET_ALL_SAKES_RESPONSE,
   DeleteSake,
@@ -33,6 +48,10 @@ export default function SakeTracker() {
     BLANK_GET_ALL_SAKES_RESPONSE
   );
 
+  const [sakeToDeleteId, setSakeToDeleteId] = useState<string>("");
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   useEffect(() => {
     GetAllSakes().then((data) => {
       setSakeData(data);
@@ -43,10 +62,10 @@ export default function SakeTracker() {
     return sakeData != BLANK_GET_ALL_SAKES_RESPONSE;
   }, [sakeData]);
 
-  const deleteSakeCallback = useCallback((id: string) => {
-    console.log("deleteSakeCallback", { id });
-    DeleteSake(id, sakeAuthState.token ?? "");
-  }, []);
+  const deleteSakeCallback = useCallback(() => {
+    DeleteSake(sakeToDeleteId, sakeAuthState.token ?? "");
+    onClose();
+  }, [onClose, sakeToDeleteId]);
 
   return (
     <SakeTrackerParent>
@@ -56,6 +75,11 @@ export default function SakeTracker() {
             <Heading size="md" as="em" color="brand.text">
               Sekiro
             </Heading>
+            <DeleteConfirmationDialog
+              isOpen={isOpen}
+              onCancel={onClose}
+              onDelete={deleteSakeCallback}
+            />
             {sakeDataLoaded ? (
               <>
                 <TableContainer color="brand.text">
@@ -79,10 +103,8 @@ export default function SakeTracker() {
                                 <CloseButton
                                   color="red"
                                   onClick={() => {
-                                    console.log("In delete sake callback", {
-                                      sake,
-                                    });
-                                    deleteSakeCallback(sake.id ?? "");
+                                    setSakeToDeleteId(sake.id ?? "");
+                                    onOpen();
                                   }}
                                 />
                               </Td>
@@ -109,5 +131,51 @@ export default function SakeTracker() {
         </Flex>
       </Container>
     </SakeTrackerParent>
+  );
+}
+
+interface DeleteConfirmationDialogProps {
+  isOpen: boolean;
+  onCancel: () => void;
+  onDelete: () => void;
+}
+
+function DeleteConfirmationDialog({
+  isOpen,
+  onCancel,
+  onDelete,
+}: DeleteConfirmationDialogProps) {
+  const cancelRef = useRef(null);
+
+  return (
+    <>
+      <AlertDialog
+        isOpen={isOpen}
+        onClose={onCancel}
+        leastDestructiveRef={cancelRef}
+        isCentered
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Sake
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure you want to delete this sake?
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onCancel}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={onDelete} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    </>
   );
 }

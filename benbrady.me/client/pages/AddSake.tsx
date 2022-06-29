@@ -45,7 +45,6 @@ function AddSakeReducer(
     }
     case "commitNewSake": {
       const [{}, token] = action;
-      console.log("Trying to save new sake:", { newSake: state.sake });
       // TODO (bbrady) - do something with response
       AddNewSake(state.sake, token ?? "");
       return {
