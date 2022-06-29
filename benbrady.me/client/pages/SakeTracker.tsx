@@ -63,7 +63,9 @@ export default function SakeTracker() {
   }, [sakeData]);
 
   const deleteSakeCallback = useCallback(() => {
-    DeleteSake(sakeToDeleteId, sakeAuthState.token ?? "");
+    DeleteSake(sakeToDeleteId, sakeAuthState.token ?? "").then((data) =>
+      setSakeData(data)
+    );
     onClose();
   }, [onClose, sakeToDeleteId]);
 
