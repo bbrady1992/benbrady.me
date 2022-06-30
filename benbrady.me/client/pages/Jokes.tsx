@@ -67,6 +67,11 @@ export default function Jokes(): JSX.Element {
                   setup="Where does Hitler keep his armies?"
                   punchline="In his sleevies"
                 />
+
+                <Joke
+                  setup="Did you know alligators can live to be up to 100 years old?"
+                  punchline="That's why it's likely you'll see them later"
+                />
               </Accordion>
               <Img
                 src="/images/stuart-little.jpg"
