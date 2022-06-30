@@ -122,9 +122,11 @@ export default function SakeTracker() {
                     </Tbody>
                   </Table>
                 </TableContainer>
-                <NextLink href="/AddSake">
-                  <Link color="brand.text">Add new sake</Link>
-                </NextLink>
+                {sakeAuthState.signed_in && (
+                  <NextLink href="/AddSake">
+                    <Link color="brand.text">Add new sake</Link>
+                  </NextLink>
+                )}
               </>
             ) : (
               <Spinner color="brand.text" />
