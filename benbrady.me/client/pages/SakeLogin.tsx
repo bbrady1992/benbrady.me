@@ -9,16 +9,18 @@ import {
   SimpleGrid,
   VStack,
 } from "@chakra-ui/react";
+import Router from "next/router";
 import { useCallback, useContext, useState } from "react";
 import { BLANK_LOGIN_REQUEST, LoginRequest } from "../api/SakeAuth";
 import {
   SakeAuthDispatchContext,
+  SakeAuthState,
   SakeAuthStateContext,
 } from "../api/SakeAuthContext";
 import SakeTrackerParent from "../Components/SakeTrackerParent";
 
 export default function SakeLogin(): JSX.Element {
-  const authState = useContext(SakeAuthStateContext);
+  const authState = useContext<SakeAuthState>(SakeAuthStateContext);
   const authStateDispatch = useContext(SakeAuthDispatchContext);
 
   const [loginRequest, setLoginRequest] =
@@ -43,54 +45,60 @@ export default function SakeLogin(): JSX.Element {
     [authStateDispatch, loginRequest]
   );
 
-  return (
-    <SakeTrackerParent>
-      <Container maxWidth="full" padding={0} bg="brand.background">
-        <Flex height="100vh" justifyContent="center" alignItems="center">
-          <VStack padding={4} spacing={8} textAlign="center">
-            <SimpleGrid
-              columns={2}
-              columnGap={3}
-              rowGap={6}
-              width="full"
-              color="brand.text"
-            >
-              <GridItem colSpan={2}>
-                <FormControl>
-                  <FormLabel htmlFor="input-sake-login-username">
-                    Username
-                  </FormLabel>
-                  <Input
-                    id="input-sake-login-username"
-                    onChange={onUsernameChange}
-                    type="text"
-                    placeholder="Username"
-                    required
-                  />
-                </FormControl>
-              </GridItem>
+  if (authState.signed_in) {
+    Router.push("/SakeTracker");
+  }
 
-              <GridItem colSpan={2}>
-                <FormControl>
-                  <FormLabel htmlFor="input-sake-login-password">
-                    Password
-                  </FormLabel>
-                  <Input
-                    id="input-sake-login-password"
-                    onChange={onPasswordChange}
-                    type="password"
-                    placeholder="Password"
-                    required
-                  />
-                </FormControl>
-              </GridItem>
-            </SimpleGrid>
-            <Button colorScheme="green" onClick={onLoginClicked}>
-              Login
-            </Button>
-          </VStack>
-        </Flex>
-      </Container>
-    </SakeTrackerParent>
+  return (
+    <>
+      <SakeTrackerParent>
+        <Container maxWidth="full" padding={0} bg="brand.background">
+          <Flex height="100vh" justifyContent="center" alignItems="center">
+            <VStack padding={4} spacing={8} textAlign="center">
+              <SimpleGrid
+                columns={2}
+                columnGap={3}
+                rowGap={6}
+                width="full"
+                color="brand.text"
+              >
+                <GridItem colSpan={2}>
+                  <FormControl>
+                    <FormLabel htmlFor="input-sake-login-username">
+                      Username
+                    </FormLabel>
+                    <Input
+                      id="input-sake-login-username"
+                      onChange={onUsernameChange}
+                      type="text"
+                      placeholder="Username"
+                      required
+                    />
+                  </FormControl>
+                </GridItem>
+
+                <GridItem colSpan={2}>
+                  <FormControl>
+                    <FormLabel htmlFor="input-sake-login-password">
+                      Password
+                    </FormLabel>
+                    <Input
+                      id="input-sake-login-password"
+                      onChange={onPasswordChange}
+                      type="password"
+                      placeholder="Password"
+                      required
+                    />
+                  </FormControl>
+                </GridItem>
+              </SimpleGrid>
+              <Button colorScheme="green" onClick={onLoginClicked}>
+                Login
+              </Button>
+            </VStack>
+          </Flex>
+        </Container>
+      </SakeTrackerParent>
+    </>
   );
 }
