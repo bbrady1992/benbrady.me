@@ -25,13 +25,13 @@ export default function SakeNavbar() {
 
   return (
     <Flex
-      bg="brand.dark"
+      bg="sake.dark"
       paddingX={8}
       paddingY={2}
       justifyContent="space-between"
       alignItems="center"
     >
-      <Heading color="brand.text">
+      <Heading color="sake.text">
         <NextLink href="/SakeTracker">
           <Link>Sake Tracker</Link>
         </NextLink>
@@ -39,8 +39,8 @@ export default function SakeNavbar() {
       {authState.signed_in ? (
         <>
           <HStack gap={8}>
-            <Text color="brand.text">{authState.username}</Text>
-            <Button variant="link" color="brand.text" onClick={OnLogoutClicked}>
+            <Text color="sake.text">{authState.username}</Text>
+            <Button variant="link" color="sake.text" onClick={OnLogoutClicked}>
               Sign out
             </Button>
           </HStack>
@@ -48,7 +48,7 @@ export default function SakeNavbar() {
       ) : (
         <>
           <NextLink href="/SakeLogin">
-            <Link color="brand.text">Sign in</Link>
+            <Link color="sake.text">Sign in</Link>
           </NextLink>
         </>
       )}

@@ -52,7 +52,7 @@ export default function SakeLogin(): JSX.Element {
   return (
     <>
       <SakeTrackerParent>
-        <Container maxWidth="full" padding={0} bg="brand.background">
+        <Container maxWidth="full" padding={0} bg="sake.background">
           <Flex height="100vh" justifyContent="center" alignItems="center">
             <VStack padding={4} spacing={8} textAlign="center">
               <SimpleGrid
@@ -60,7 +60,7 @@ export default function SakeLogin(): JSX.Element {
                 columnGap={3}
                 rowGap={6}
                 width="full"
-                color="brand.text"
+                color="sake.text"
               >
                 <GridItem colSpan={2}>
                   <FormControl>
@@ -92,7 +92,13 @@ export default function SakeLogin(): JSX.Element {
                   </FormControl>
                 </GridItem>
               </SimpleGrid>
-              <Button colorScheme="green" onClick={onLoginClicked}>
+              <Button
+                bgColor="sake.dark"
+                color="sake.text"
+                _hover={{ bg: "sake.light" }}
+                _active={{ bg: "sake.primary" }}
+                onClick={onLoginClicked}
+              >
                 Login
               </Button>
             </VStack>

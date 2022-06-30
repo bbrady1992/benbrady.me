@@ -71,10 +71,15 @@ export default function SakeTracker() {
 
   return (
     <SakeTrackerParent>
-      <Container maxWidth="full" padding={0} bg="brand.background">
-        <Flex height="100vh" justifyContent="center" alignItems="center">
+      <Container maxWidth="full" padding={0} bg="sake.background">
+        <Flex
+          height="100vh"
+          justifyContent="center"
+          alignItems="flex-start"
+          paddingTop={8}
+        >
           <VStack padding={4} spacing={4} textAlign="center">
-            <Heading size="md" as="em" color="brand.text">
+            <Heading size="md" as="em" color="sake.text">
               Sekiro
             </Heading>
             <DeleteConfirmationDialog
@@ -84,16 +89,16 @@ export default function SakeTracker() {
             />
             {sakeDataLoaded ? (
               <>
-                <TableContainer color="brand.text">
+                <TableContainer color="sake.text">
                   <Table variant="simple">
                     <Thead>
                       <Tr>
                         {sakeAuthState.signed_in && <Th></Th>}
-                        <Th>Name</Th>
-                        <Th>Type</Th>
-                        <Th>Ben's Rating</Th>
-                        <Th>Jason's Rating</Th>
-                        <Th>Cost</Th>
+                        <Th color="sake.text">Name</Th>
+                        <Th color="sake.text">Type</Th>
+                        <Th color="sake.text">Ben's Rating</Th>
+                        <Th color="sake.text">Jason's Rating</Th>
+                        <Th color="sake.text">Cost</Th>
                       </Tr>
                     </Thead>
                     <Tbody>
@@ -124,12 +129,12 @@ export default function SakeTracker() {
                 </TableContainer>
                 {sakeAuthState.signed_in && (
                   <NextLink href="/AddSake">
-                    <Link color="brand.text">Add new sake</Link>
+                    <Link color="sake.text">Add new sake</Link>
                   </NextLink>
                 )}
               </>
             ) : (
-              <Spinner color="brand.text" />
+              <Spinner color="sake.text" />
             )}
           </VStack>
         </Flex>

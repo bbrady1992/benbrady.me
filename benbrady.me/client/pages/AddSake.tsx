@@ -100,11 +100,11 @@ export default function AddSake(): JSX.Element {
 
   return (
     <SakeTrackerParent>
-      <Container maxWidth="full" padding={0} bg="brand.background">
+      <Container maxWidth="full" padding={0} bg="sake.background">
         <Flex height="100vh" justifyContent="center" alignItems="center">
           {sakeAuthState.signed_in ? (
             <VStack padding={4} spacing={4} textAlign="center">
-              <Heading size="2xl" color="brand.text">
+              <Heading size="2xl" color="sake.text">
                 Add new sake
               </Heading>
               {AddSakeForm({
@@ -114,12 +114,18 @@ export default function AddSake(): JSX.Element {
                 onJasonsRatingChange,
                 onCostChange,
               })}
-              <Button colorScheme="green" onClick={onSave}>
+              <Button
+                bgColor="sake.dark"
+                color="sake.text"
+                _hover={{ bg: "sake.light" }}
+                _active={{ bg: "sake.primary" }}
+                onClick={onSave}
+              >
                 Save
               </Button>
             </VStack>
           ) : (
-            <Text color="brand.text">Please sign in to add new sakes</Text>
+            <Text color="sake.text">Please sign in to add new sakes</Text>
           )}
         </Flex>
       </Container>
@@ -150,7 +156,7 @@ function AddSakeForm(props: AddSakeFormProps) {
         columnGap={3}
         rowGap={6}
         width="full"
-        color="brand.text"
+        color="sake.text"
       >
         <GridItem colSpan={2}>
           <FormControl>

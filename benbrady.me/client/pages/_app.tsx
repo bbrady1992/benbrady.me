@@ -19,6 +19,13 @@ const colors = {
     dark: "#171717",
     text: "#ffffff",
   },
+  sake: {
+    light: "#4e47bf",
+    primary: "#001f8e",
+    dark: "#00005f",
+    background: "#001f8e",
+    text: "#fff8e1",
+  },
 };
 
 const theme = extendTheme({ colors });
