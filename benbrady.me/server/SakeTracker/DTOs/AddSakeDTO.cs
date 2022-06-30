@@ -12,5 +12,6 @@ namespace server.SakeTracker.DTOs
     public int BensRating { get; set; } = -1;
     public int JasonsRating { get; set; } = -1;
     public double Cost { get; set; } = 0;
+    public string Notes { get; set; }
   }
 }

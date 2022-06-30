@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using server.SakeTracker.Repository;
 
 namespace server.Migrations
 {
     [DbContext(typeof(SakeDbContext))]
-    partial class SakeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220630211305_AddNotesToSake")]
+    partial class AddNotesToSake
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

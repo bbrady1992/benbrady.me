@@ -14,5 +14,6 @@ namespace server.SakeTracker.Models
     public int BensRating { get; set; }
     public int JasonsRating { get; set; }
     public double Cost { get; set; }
+    public string Notes {get;set;}
   }
 }

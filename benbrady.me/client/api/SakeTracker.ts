@@ -19,6 +19,7 @@ export interface Sake {
   bensRating: number;
   jasonsRating: number;
   cost: number;
+  notes: string;
 }
 
 export const BLANK_SAKE = {
@@ -26,7 +27,8 @@ export const BLANK_SAKE = {
   type: "",
   bensRating: -1,
   jasonsRating: -1,
-  cost: -1
+  cost: -1,
+  notes: ""
 }
 
 export function GetAllSakes(): Promise<GetAllSakesResponse> {

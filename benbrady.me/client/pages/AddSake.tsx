@@ -14,6 +14,7 @@ import {
   NumberInputStepper,
   SimpleGrid,
   Text,
+  Textarea,
   VStack,
 } from "@chakra-ui/react";
 import { ChangeEventHandler, useCallback, useContext, useReducer } from "react";
@@ -93,6 +94,12 @@ export default function AddSake(): JSX.Element {
     [state]
   );
 
+  const onNotesChange = useCallback(
+    (event: any) =>
+      dispatch(["sakeChanged", { ...state.sake, notes: event.target.value }]),
+    [state]
+  );
+
   const onSave = useCallback(
     () => dispatch(["commitNewSake", sakeAuthState.token]),
     []
@@ -104,7 +111,7 @@ export default function AddSake(): JSX.Element {
         <Flex height="100vh" justifyContent="center" alignItems="center">
           {sakeAuthState.signed_in ? (
             <VStack padding={4} spacing={4} textAlign="center">
-              <Heading size="2xl" color="sake.text">
+              <Heading size="md" color="sake.text">
                 Add new sake
               </Heading>
               {AddSakeForm({
@@ -113,6 +120,7 @@ export default function AddSake(): JSX.Element {
                 onBensRatingChange,
                 onJasonsRatingChange,
                 onCostChange,
+                onNotesChange,
               })}
               <Button
                 bgColor="sake.dark"
@@ -139,6 +147,7 @@ interface AddSakeFormProps {
   onBensRatingChange: (valueAsString: string, value: number) => void;
   onJasonsRatingChange: (valueAsString: string, value: number) => void;
   onCostChange: (valueAsString: string, value: number) => void;
+  onNotesChange: ChangeEventHandler<HTMLTextAreaElement>;
 }
 
 function AddSakeForm(props: AddSakeFormProps) {
@@ -148,6 +157,7 @@ function AddSakeForm(props: AddSakeFormProps) {
     onBensRatingChange,
     onJasonsRatingChange,
     onCostChange,
+    onNotesChange,
   } = props;
   return (
     <>
@@ -233,6 +243,14 @@ function AddSakeForm(props: AddSakeFormProps) {
               <NumberDecrementStepper />
             </NumberInputStepper>
           </NumberInput>
+        </GridItem>
+        <GridItem colSpan={2}>
+          <FormLabel htmlFor="input-sake-notes">Notes</FormLabel>
+          <Textarea
+            id="input-sake-notes"
+            onChange={onNotesChange}
+            placeholder="Additional notes"
+          ></Textarea>
         </GridItem>
         <GridItem colSpan={1}></GridItem>
       </SimpleGrid>

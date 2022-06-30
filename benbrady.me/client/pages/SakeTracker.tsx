@@ -41,6 +41,8 @@ import NextLink from "next/link";
 import SakeTrackerParent from "../Components/SakeTrackerParent";
 import { SakeAuthStateContext } from "../api/SakeAuthContext";
 
+const NOTES_MAX_WIDTH = 80;
+
 export default function SakeTracker() {
   const sakeAuthState = useContext(SakeAuthStateContext);
 
@@ -99,6 +101,9 @@ export default function SakeTracker() {
                         <Th color="sake.text">Ben's Rating</Th>
                         <Th color="sake.text">Jason's Rating</Th>
                         <Th color="sake.text">Cost</Th>
+                        <Th maxWidth={NOTES_MAX_WIDTH} color="sake.text">
+                          Notes
+                        </Th>
                       </Tr>
                     </Thead>
                     <Tbody>
@@ -121,6 +126,12 @@ export default function SakeTracker() {
                             <Td>{sake.bensRating}</Td>
                             <Td>{sake.jasonsRating}</Td>
                             <Td>{sake.cost}</Td>
+                            <Td
+                              maxWidth={NOTES_MAX_WIDTH}
+                              style={{ wordWrap: "break-word" }}
+                            >
+                              {sake.notes}
+                            </Td>
                           </Tr>
                         );
                       })}
