@@ -5,7 +5,6 @@ import {
   DEFAULT_SAKE_AUTH_STATE,
   SakeAuthStateContext,
   SakeAuthReducer,
-  SakeAuthState,
   SakeAuthDispatchContext,
 } from "../api/SakeAuthContext";
 import { useEffect, useReducer } from "react";
@@ -20,11 +19,11 @@ const colors = {
     text: "#ffffff",
   },
   sake: {
-    light: "#4e47bf",
-    primary: "#001f8e",
-    dark: "#00005f",
-    background: "#001f8e",
-    text: "#fff8e1",
+    light: "#54b1d4",
+    primary: "#0881a3",
+    dark: "#0d3a5f",
+    background: "#0881a3",
+    text: "#f4e7d3",
   },
 };
 

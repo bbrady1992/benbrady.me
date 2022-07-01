@@ -176,6 +176,8 @@ function AddSakeForm(props: AddSakeFormProps) {
               type="text"
               onChange={onNameChange}
               placeholder="Name"
+              focusBorderColor="sake.dark"
+              borderColor="sake.text"
               required
             />
           </FormControl>
@@ -189,6 +191,8 @@ function AddSakeForm(props: AddSakeFormProps) {
               type="text"
               onChange={onTypeChange}
               placeholder="Type"
+              focusBorderColor="sake.dark"
+              borderColor="sake.text"
               required
             />
           </FormControl>
@@ -202,6 +206,8 @@ function AddSakeForm(props: AddSakeFormProps) {
               onChange={onBensRatingChange}
               min={0}
               max={5}
+              focusBorderColor="sake.dark"
+              borderColor="sake.text"
             >
               <NumberInputField />
               <NumberInputStepper>
@@ -220,6 +226,8 @@ function AddSakeForm(props: AddSakeFormProps) {
               onChange={onJasonsRatingChange}
               min={0}
               max={5}
+              focusBorderColor="sake.dark"
+              borderColor="sake.text"
             >
               <NumberInputField />
               <NumberInputStepper>
@@ -236,6 +244,8 @@ function AddSakeForm(props: AddSakeFormProps) {
             onChange={onCostChange}
             precision={2}
             step={0.01}
+            focusBorderColor="sake.dark"
+            borderColor="sake.text"
           >
             <NumberInputField />
             <NumberInputStepper>
@@ -250,6 +260,8 @@ function AddSakeForm(props: AddSakeFormProps) {
             id="input-sake-notes"
             onChange={onNotesChange}
             placeholder="Additional notes"
+            focusBorderColor="sake.dark"
+            borderColor="sake.text"
           ></Textarea>
         </GridItem>
         <GridItem colSpan={1}></GridItem>
